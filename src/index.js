@@ -40,9 +40,9 @@ function moviesCards(movies) {
 
 
 
-function modalMurkup(movie) {
-    const genresName = []
-    movie.genres.map(ganre => genresName.push(ganre.name)).join(' ')
+function modalMurkup(movie) {   
+    let genresName = movie.genres.map(ganre => ganre.name).join(', ')
+    
    return `
   <img src="${movie.poster_path}" alt="" /></a>
   <h2>${movie.original_title}</h2>
@@ -55,7 +55,6 @@ function modalMurkup(movie) {
   <button type="button">add to Watched</button>
   <button type="button">add to queue</button>
 ` 
-
 }
 
 
