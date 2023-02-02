@@ -1,50 +1,64 @@
-import { fetchCountries } from './fetchCountries';
-import { onCountryInfoMurkup } from './murkup';
-import { onCountryList } from './murkup';
-import './css/styles.css';
-import Notiflix from 'notiflix';
-import debounce from 'lodash.debounce';
-
-const DEBOUNCE_DELAY = 300;
-
-const countryInfo = document.querySelector('.country-info');
-const countryList = document.querySelector('.country-list');
-countryList.style = ''
+import { getAxiosSearchFilms } from './fetchCountries'
+import { getMovieByID} from './fetchCountries'
+const form = document.querySelector('.form-search')
+const main = document.querySelector('.main')
+const modal = document.querySelector('.modal')
 
 
+form.addEventListener('submit', getQueryValue)
+
+function getQueryValue(e) {
+    e.preventDefault()
+    const query = e.target.elements.input.value;
+    getAxiosSearchFilms(query).then(movies => {
+        main.insertAdjacentHTML('afterbegin', moviesCards(movies.results))
+    })
+
+}
+
+main.addEventListener('click', onMovieCardClick)
+
+function onMovieCardClick(e) {
+    getMovieByID(e.target.alt).then(movie => {
+        modal.innerHTML = ''
+        modal.insertAdjacentHTML('afterbegin', modalMurkup(movie))
+    })
+    
+}
+
+function moviesCards(movies) {
+    return  movies.map(movie => {
+        return `
+            <div> 
+             <img src = ${movie.poster_path} alt=${movie.id}>
+             <p>${movie.original_title}</p>
+             </div>
+             
+             `
+       }).join('');
+}
 
 
 
-const input = document.querySelector('#search-box')
+function modalMurkup(movie) {
+    const genresName = []
+    movie.genres.map(ganre => genresName.push(ganre.name)).join(' ')
+   return `
+  <img src="${movie.poster_path}" alt="" /></a>
+  <h2>${movie.original_title}</h2>
+  <p>Vote / Votes ${movie.vote_average}/${movie.vote_count}</p>
+  <p>Popularity ${movie.popularity}</p>
+  <p>Original Title ${movie.original_title} </p>
+  <p>Genre ${genresName}</p>
+  <h3>About </h3>
+  <p>${movie.overview}</p>
+  <button type="button">add to Watched</button>
+  <button type="button">add to queue</button>
+` 
 
-input.addEventListener('input', debounce(onInputCountryName, DEBOUNCE_DELAY))
+}
 
-function onInputCountryName(e) {
-    fetchCountries(e.target.value.trim()).then(countries => {
-        if (countries.length > 10) {
-            countryInfo.innerHTML = '';
-            countryList.innerHTML = '';
-           return Notiflix.Notify.info('Too many matches found. Please enter a more specific name.') 
-        }
-        else if (e.target.value.trim() === ''){
-            countryInfo.innerHTML = '';
-            countryList.innerHTML = '';
-            return
-        }
-        else if (countries.length === 1) {
-            countryInfo.innerHTML = '';
-            countryList.innerHTML = '';
-            countryInfo.insertAdjacentHTML('beforeend', onCountryInfoMurkup(countries))
-        }
-        else if (countries.length >= 2 && countries.length < 10) {
-            countryInfo.innerHTML = '';
-            countryList.innerHTML = '';
-            countryList.insertAdjacentHTML('beforeend', onCountryList(countries))
-        }
-       else (Notiflix.Notify.failure('Oops, there is no country with that name'))
-    }) 
-   
-    }
+
     
 
 

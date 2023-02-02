@@ -1,16 +1,42 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 10</title>
+    <title>Document</title>
   </head>
   <body>
-    <input type="text" id="search-box" />
-    <ul class="country-list"></ul>
-    <div class="country-info"></div>
+    <header class="header-home">
+      <!-- <div class="header-wrapper container">
+        <nav class="nav">
+          <ul class="nav-list">
+            <li class="nav-list__item">
+              <a href="./index.html" class="home nav-list__link">Home</a>
+            </li>
+            <li class="nav-list__item">
+              <a href="./library.html" class="my-library nav-list__link"
+                >My library</a
+              >
+            </li>
+          </ul> -->
+        <!-- </nav> -->
 
-    <script src="index.js" type="module"></script>
+        <div class="form-wrapper">
+          <form action="#" class="form-search">
+            <input
+              type="text"
+              class="input-query"
+              id="input"
+              placeholder="Movie search"
+            />
+            <button  type="submit" class="submit-search-button"> button</button>
+            <p class="input-answer"></p>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="main"></div>
+    <div class="modal is-hiden"></div>
+    <script type="module" src="./index.js"></script>
   </body>
 </html>
